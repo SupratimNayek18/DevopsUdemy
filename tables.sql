@@ -1,6 +1,4 @@
-create database microservicesdb;
-
-use microservicesdb;
+use mydb;
 
 create table product(
 id int AUTO_INCREMENT PRIMARY KEY,

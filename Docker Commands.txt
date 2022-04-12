@@ -1,0 +1,17 @@
+------------Running Mysql in a container------------
+
+docker run -itd -p 6666:3306 --name=supratim-mysql --env="MYSQL_ROOT_PASSWORD=1234" 
+--env="MYSQL_DATABASE=emp" mysql
+
+-------------Network-----------------
+docker network create demonw --subnet=172.19.0.0/16
+
+    --> Run a container with the network
+    docker run --name=webserver --net demonw --ip 172.19.0.2 -h web.supratim.com -p 82:80 -it ubuntu bash
+
+    -->disconnect a container from the network
+    docker network disconnect demonw webserver
+
+    -->connect with any network
+    docker network connect bridge webserver
+
