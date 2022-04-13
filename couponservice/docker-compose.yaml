@@ -1,0 +1,52 @@
+version: "3.1"
+services:
+  product-app:
+    container_name: product-app
+    image: vulka9n/productservice:latest
+    restart: on-failure
+    ports:
+      - 10666:8081
+    environment:
+      WAIT_HOSTS: mysql:3306
+    depends_on:
+      - docker-mysql
+      - coupon-app
+
+  coupon-app:
+    container_name: coupon-app
+    image: vulka9n/couponservice:latest
+    restart: on-failure
+    ports:
+      - 10555:8080
+    environment:
+      WAIT_HOSTS: mysql:3306
+    depends_on:
+      - docker-mysql
+
+  flight-app:
+    container_name: flight-app
+    image: flight-service-image:latest
+    restart: on-failure
+    ports:
+      - 10777:8082
+    environment:
+      WAIT_HOSTS: mysql:3306
+    depends_on:
+      - docker-mysql
+
+  docker-mysql:
+    container_name: docker-mysql
+    image: mysql
+    restart: always
+    ports:
+      - "6666:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ROOT_HOST: "%"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: '/user/bin/mysql --user=root --password=1234 --execute \"SHOW DATABASES \"'
+      interval: 4s
+      timeout: 20s
+      retries: 5

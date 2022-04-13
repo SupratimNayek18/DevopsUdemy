@@ -1,0 +1,16 @@
+version: "3.1"
+services:
+  nginx-service:
+    image: nginx
+    container_name: nginx-container
+    networks:
+      - webnetwork
+    ports:
+      - "8082:80"
+    volumes:
+      - "./myvol:/data"
+networks:
+  webnetwork:
+    driver: bridge
+  dbnetwork:
+    driver: bridge
